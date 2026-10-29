@@ -12,7 +12,9 @@ def main() -> None:
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
     imp = carica_impostazioni()
     print(f"Quadro sinottico su http://{imp.host}:{imp.porta}  (fonte: {imp.fonte}, linea: {imp.linea})")
-    uvicorn.run(crea_app(imp), host=imp.host, port=imp.porta)
+    # Senza un limite, alla chiusura il server aspetterebbe per sempre che il
+    # browser chiuda il collegamento in diretta, e Ctrl+C sembrerebbe non funzionare.
+    uvicorn.run(crea_app(imp), host=imp.host, port=imp.porta, timeout_graceful_shutdown=2)
 
 
 if __name__ == "__main__":
