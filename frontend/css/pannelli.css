@@ -37,7 +37,9 @@
   top: 0;
   background: var(--sfondo-pannello);
 }
-.tabella td { padding: 4px 6px; border-bottom: 1px solid #111a23; white-space: nowrap; }
+.tabella td { padding: 4px 6px; border-bottom: 1px solid #111a23; vertical-align: top; }
+/* Numero treno e ritardo restano su una riga; i testi lunghi vanno a capo. */
+.tabella td:first-child, .tabella td:last-child { white-space: nowrap; }
 .tabella tbody tr { cursor: pointer; }
 .tabella tbody tr:hover { background: #111c27; }
 .tabella tr.selezionato { background: #182636; }

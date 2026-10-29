@@ -1,10 +1,13 @@
 // Disegna e muove i treni sul quadro.
+// Come nei quadri RFI il numero del treno sta dentro il rettangolo ("descrittore").
+// In linea il ritardo è scritto accanto; in stazione, dove i binari sono vicini,
+// diventa il colore del bordo per non sovrapporsi ai treni dei binari accanto.
 
 import { svg } from "../util/dom.js";
 import { coloreCategoria, coloreRitardo } from "../util/formato.js";
 
-const LUNGHEZZA = 30;
-const ALTEZZA = 10;
+const LUNGHEZZA = 40;
+const ALTEZZA = 13;
 
 function creaTreno(treno, alClic) {
   const gruppo = svg("g", { class: "treno" });
@@ -37,13 +40,17 @@ function aggiornaTreno(parti, treno, geo) {
   parti.punta.setAttribute("points", `${xp},${-ALTEZZA / 2} ${xp + d * 7},0 ${xp},${ALTEZZA / 2}`);
   parti.punta.style.fill = colore;
 
-  const ySigla = d > 0 ? -10 : 20;
-  parti.sigla.setAttribute("y", ySigla);
+  parti.sigla.setAttribute("y", 4);
   parti.sigla.textContent = treno.numero;
-  parti.ritardo.setAttribute("y", d > 0 ? ySigla - 11 : ySigla + 11);
-  parti.ritardo.textContent = treno.ritardo > 0 ? `+${treno.ritardo}'` : "";
+
+  const inStazione = p.stato === "in_stazione";
+  const inRitardo = treno.ritardo > 0;
+  parti.ritardo.setAttribute("y", d > 0 ? -10 : 20);
+  parti.ritardo.textContent = inRitardo && !inStazione ? `+${treno.ritardo}'` : "";
   parti.ritardo.style.fill = coloreRitardo(treno.ritardo);
-  parti.titolo.textContent = `${treno.sigla}  ${treno.origine} → ${treno.destinazione}`;
+  parti.corpo.style.stroke = inStazione && inRitardo ? coloreRitardo(treno.ritardo) : "";
+  const ritardo = inRitardo ? `  +${treno.ritardo}'` : "";
+  parti.titolo.textContent = `${treno.sigla}  ${treno.origine} → ${treno.destinazione}${ritardo}`;
 }
 
 export function creaLivelloTreni(livello, geo, alClic) {
