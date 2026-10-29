@@ -1,0 +1,35 @@
+# Linea storica Milano Centrale - Bologna Centrale (via Lodi, Piacenza, Parma).
+#
+# Campi di ogni stazione:
+#   id       identificativo breve, usato internamente
+#   nome     nome mostrato sul quadro sinottico
+#   nome_vt  nome come compare su ViaggiaTreno (serve per trovare il codice)
+#   km       progressiva chilometrica (approssimata) da Milano Centrale
+#   binari   binari disegnati sul quadro; un treno su un binario non elencato
+#            viene disegnato sul binario di corsa della sua direzione
+#   codice   (facoltativo) codice ViaggiaTreno; se manca viene cercato in automatico
+
+id: milano_bologna
+nome: Milano Centrale – Bologna Centrale
+descrizione: Linea storica via Lodi, Piacenza, Parma, Reggio Emilia, Modena
+verso_crescente: verso Bologna
+verso_decrescente: verso Milano
+# Due fermate più lontane di così non sono considerate un tratto di questa linea
+# (esclude ad esempio le Frecce che corrono sulla linea Alta Velocità).
+max_salto_km: 80
+
+stazioni:
+  - { id: milano_c, nome: Milano C.le, nome_vt: MILANO CENTRALE, km: 0, binari: ["11", "12", "13", "14", "15", "16"] }
+  - { id: lambrate, nome: Milano Lambrate, nome_vt: MILANO LAMBRATE, km: 4, binari: ["1", "2", "3", "4"] }
+  - { id: rogoredo, nome: Milano Rogoredo, nome_vt: MILANO ROGOREDO, km: 9, binari: ["1", "2", "3", "4", "5", "6"] }
+  - { id: melegnano, nome: Melegnano, nome_vt: MELEGNANO, km: 21, binari: ["1", "2", "3"] }
+  - { id: lodi, nome: Lodi, nome_vt: LODI, km: 33, binari: ["1", "2", "3", "4"] }
+  - { id: codogno, nome: Codogno, nome_vt: CODOGNO, km: 57, binari: ["1", "2", "3", "4", "5"] }
+  - { id: piacenza, nome: Piacenza, nome_vt: PIACENZA, km: 71, binari: ["1", "2", "3", "4", "5", "6"] }
+  - { id: fiorenzuola, nome: Fiorenzuola, nome_vt: FIORENZUOLA, km: 93, binari: ["1", "2", "3"] }
+  - { id: fidenza, nome: Fidenza, nome_vt: FIDENZA, km: 110, binari: ["1", "2", "3", "4"] }
+  - { id: parma, nome: Parma, nome_vt: PARMA, km: 131, binari: ["1", "2", "3", "4", "5", "6"] }
+  - { id: reggio_e, nome: Reggio Emilia, nome_vt: REGGIO EMILIA, km: 158, binari: ["1", "2", "3", "4"] }
+  - { id: modena, nome: Modena, nome_vt: MODENA, km: 183, binari: ["1", "2", "3", "4", "5"] }
+  - { id: castelfranco, nome: Castelfranco E., nome_vt: CASTELFRANCO EMILIA, km: 196, binari: ["1", "2", "3"] }
+  - { id: bologna_c, nome: Bologna C.le, nome_vt: BOLOGNA CENTRALE, km: 219, binari: ["1", "2", "3", "4", "5", "6"] }

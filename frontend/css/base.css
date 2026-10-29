@@ -1,0 +1,46 @@
+/* Colori e impostazioni comuni a tutto lo schermo. */
+
+:root {
+  color-scheme: dark;
+  --sfondo: #04070b;
+  --sfondo-pannello: #0a1017;
+  --bordo: #1b2733;
+  --testo: #d3dce6;
+  --testo-tenue: #6f8093;
+
+  --binario: #4f5d6b;
+  --binario-libero-stazione: #3a4653;
+  --occupato: #ff3b30;
+  --itinerario: #f4c430;
+
+  --cat-frecce: #e5383b;
+  --cat-ic: #3a86ff;
+  --cat-reg: #2ec27e;
+  --cat-altro: #c77dff;
+
+  --ritardo-ok: #2ec27e;
+  --ritardo-lieve: #f4c430;
+  --ritardo-medio: #ff8c1a;
+  --ritardo-grave: #ff3b30;
+
+  --incrocio: #ffb000;
+  --precedenza: #22d3ee;
+
+  --carattere: "Consolas", "DejaVu Sans Mono", "Menlo", monospace;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  background: var(--sfondo);
+  color: var(--testo);
+  font-family: var(--carattere);
+  font-size: 14px;
+}
+
+main {
+  padding: 0 16px 16px;
+}
+
+h1, h2, p { margin: 0; }

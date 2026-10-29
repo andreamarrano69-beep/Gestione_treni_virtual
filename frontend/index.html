@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quadro Sinottico</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/testata.css">
+  <link rel="stylesheet" href="css/sinottico.css">
+  <link rel="stylesheet" href="css/pannelli.css">
+</head>
+<body>
+  <header class="testata">
+    <div class="testata__linea">
+      <span class="testata__marchio">DCO</span>
+      <div>
+        <h1 id="nome-linea">Caricamento linea…</h1>
+        <p id="descrizione-linea"></p>
+      </div>
+    </div>
+    <div class="orologio" id="orologio">--:--:--</div>
+    <div class="stato-fonte" id="stato-fonte"></div>
+  </header>
+
+  <main>
+    <section class="quadro" aria-label="Quadro sinottico della linea">
+      <svg id="sinottico" role="img"></svg>
+      <ul class="legenda" id="legenda"></ul>
+    </section>
+
+    <section class="pannelli">
+      <article class="pannello pannello--largo">
+        <h2>Treni in linea <span class="contatore" id="contatore-treni"></span></h2>
+        <div class="scorrevole"><table class="tabella" id="tabella-treni"></table></div>
+      </article>
+      <article class="pannello">
+        <h2>Prossimi incroci e precedenze</h2>
+        <div class="scorrevole"><ol class="lista-incroci" id="lista-incroci"></ol></div>
+      </article>
+      <article class="pannello">
+        <h2>Dettaglio treno</h2>
+        <div class="scorrevole" id="dettaglio-treno">
+          <p class="vuoto">Seleziona un treno sul quadro o nell'elenco.</p>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

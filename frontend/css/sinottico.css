@@ -1,0 +1,52 @@
+/* Il quadro: binari, stazioni, treni, incroci. */
+
+.quadro {
+  margin-top: 12px;
+  border: 1px solid var(--bordo);
+  background: radial-gradient(ellipse at center, #0a121b 0%, var(--sfondo) 75%);
+  overflow-x: auto;
+}
+
+#sinottico { display: block; width: 100%; min-width: 1100px; height: auto; }
+
+/* Binari */
+.binario { stroke: var(--binario); stroke-width: 3; fill: none; stroke-linecap: round; }
+.binario--stazione { stroke: var(--binario-libero-stazione); }
+.deviatoio { stroke: var(--binario-libero-stazione); stroke-width: 2; fill: none; }
+.binario.occupato { stroke: var(--occupato); filter: drop-shadow(0 0 3px var(--occupato)); }
+.deviatoio.itinerario { stroke: var(--itinerario); }
+
+/* Stazioni */
+.stazione__riquadro { fill: none; stroke: var(--bordo); stroke-dasharray: 2 3; }
+.stazione__nome { fill: var(--testo); font-size: 12px; letter-spacing: 0.5px; }
+.stazione__km { fill: var(--testo-tenue); font-size: 10px; }
+.stazione__binario { fill: var(--testo-tenue); font-size: 7px; }
+.verso { fill: var(--testo-tenue); font-size: 11px; }
+
+/* Treni */
+.treno { cursor: pointer; transition: transform 2s linear; }
+.treno__corpo { stroke: #000; stroke-width: 1; }
+.treno__sigla { fill: var(--testo); font-size: 11px; font-weight: bold; }
+.treno__ritardo { font-size: 10px; font-weight: bold; }
+.treno.selezionato .treno__corpo { stroke: #fff; stroke-width: 2.5; }
+.treno.selezionato .treno__sigla { fill: #fff; }
+
+/* Incroci previsti */
+.incrocio__segno { stroke: #000; stroke-width: 1; }
+.incrocio--incrocio .incrocio__segno { fill: var(--incrocio); }
+.incrocio--precedenza .incrocio__segno { fill: var(--precedenza); }
+
+/* Legenda */
+.legenda {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin: 0;
+  padding: 8px 16px;
+  list-style: none;
+  font-size: 11px;
+  color: var(--testo-tenue);
+  border-top: 1px solid var(--bordo);
+}
+.legenda li { display: flex; align-items: center; gap: 6px; }
+.legenda__campione { display: inline-block; width: 18px; height: 6px; }

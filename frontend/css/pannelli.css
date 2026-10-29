@@ -1,0 +1,70 @@
+/* Pannelli sotto il quadro: elenco treni, incroci, dettaglio. */
+
+.pannelli {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1.3fr;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.pannello {
+  background: var(--sfondo-pannello);
+  border: 1px solid var(--bordo);
+  padding: 10px 12px;
+  min-width: 0;
+}
+
+.pannello h2 {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--itinerario);
+  margin-bottom: 8px;
+}
+
+.contatore { color: var(--testo-tenue); }
+.scorrevole { max-height: 300px; overflow: auto; }
+.vuoto { color: var(--testo-tenue); font-size: 12px; }
+
+.tabella { width: 100%; border-collapse: collapse; font-size: 12px; }
+.tabella th {
+  text-align: left;
+  color: var(--testo-tenue);
+  font-weight: normal;
+  border-bottom: 1px solid var(--bordo);
+  padding: 4px 6px;
+  position: sticky;
+  top: 0;
+  background: var(--sfondo-pannello);
+}
+.tabella td { padding: 4px 6px; border-bottom: 1px solid #111a23; white-space: nowrap; }
+.tabella tbody tr { cursor: pointer; }
+.tabella tbody tr:hover { background: #111c27; }
+.tabella tr.selezionato { background: #182636; }
+.tabella tr.passata { color: var(--testo-tenue); }
+.tabella tr.fuori-linea td:first-child { color: var(--testo-tenue); font-style: italic; }
+
+.categoria {
+  display: inline-block;
+  min-width: 34px;
+  padding: 1px 4px;
+  color: #000;
+  font-weight: bold;
+  text-align: center;
+  border-radius: 2px;
+}
+
+.ritardo { font-weight: bold; }
+
+.lista-incroci { list-style: none; margin: 0; padding: 0; font-size: 12px; }
+.lista-incroci li { display: grid; grid-template-columns: 48px 18px 1fr; gap: 6px; padding: 4px 0; border-bottom: 1px solid #111a23; }
+.lista-incroci .luogo { grid-column: 3; color: var(--testo-tenue); }
+.icona-incrocio { color: var(--incrocio); }
+.icona-precedenza { color: var(--precedenza); }
+
+.dettaglio__intestazione { margin-bottom: 8px; font-size: 12px; }
+.dettaglio__intestazione strong { font-size: 15px; }
+
+@media (max-width: 1100px) {
+  .pannelli { grid-template-columns: 1fr; }
+}

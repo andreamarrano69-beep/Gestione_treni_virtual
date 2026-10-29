@@ -1,0 +1,41 @@
+{
+  "numeroTreno": 2645,
+  "categoria": "REG",
+  "categoriaDescrizione": "REG",
+  "compNumeroTreno": "REG 2645",
+  "origine": "MILANO CENTRALE",
+  "destinazione": "PIACENZA",
+  "ritardo": 4,
+  "stazioneUltimoRilevamento": "LODI",
+  "oraUltimoRilevamento": 1793234040000,
+  "provvedimento": 0,
+  "fermate": [
+    {
+      "stazione": "MILANO CENTRALE", "id": "S01700", "tipoFermata": "P",
+      "arrivo_teorico": null, "partenza_teorica": 1793232000000,
+      "arrivoReale": null, "partenzaReale": 1793232060000,
+      "binarioProgrammatoPartenzaDescrizione": "13", "binarioEffettivoPartenzaDescrizione": null,
+      "actualFermataType": 1
+    },
+    {
+      "stazione": "LODI", "id": "S01801", "tipoFermata": "F",
+      "arrivo_teorico": 1793233800000, "partenza_teorica": 1793233860000,
+      "arrivoReale": 1793234040000, "partenzaReale": 1793234100000,
+      "binarioProgrammatoArrivoDescrizione": "2", "binarioEffettivoArrivoDescrizione": "3",
+      "actualFermataType": 1
+    },
+    {
+      "stazione": "FIORENZUOLA", "id": "S05003", "tipoFermata": "F",
+      "arrivo_teorico": 1793235000000, "partenza_teorica": 1793235060000,
+      "arrivoReale": null, "partenzaReale": null,
+      "actualFermataType": 3
+    },
+    {
+      "stazione": "PIACENZA", "id": "S05000", "tipoFermata": "A",
+      "arrivo_teorico": 1793236200000, "partenza_teorica": null,
+      "arrivoReale": null, "partenzaReale": null,
+      "binarioProgrammatoArrivoDescrizione": "4",
+      "actualFermataType": 0
+    }
+  ]
+}

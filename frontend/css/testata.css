@@ -1,0 +1,52 @@
+/* Barra in alto: nome linea, orologio, stato della fonte dati. */
+
+.testata {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--bordo);
+}
+
+.testata__linea { display: flex; align-items: center; gap: 12px; }
+
+.testata__marchio {
+  border: 1px solid var(--itinerario);
+  color: var(--itinerario);
+  padding: 4px 8px;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.testata h1 { font-size: 18px; text-transform: uppercase; letter-spacing: 1px; }
+.testata p { color: var(--testo-tenue); font-size: 12px; }
+
+.orologio {
+  font-size: 36px;
+  font-weight: bold;
+  letter-spacing: 3px;
+  color: #ffd84d;
+  text-shadow: 0 0 12px rgba(255, 216, 77, 0.35);
+}
+
+.stato-fonte { justify-self: end; text-align: right; font-size: 12px; }
+.stato-fonte__titolo { font-size: 14px; font-weight: bold; }
+.stato-fonte__punto {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 6px;
+  background: var(--testo-tenue);
+}
+.stato-fonte--live .stato-fonte__punto { background: var(--ritardo-ok); box-shadow: 0 0 8px var(--ritardo-ok); }
+.stato-fonte--demo .stato-fonte__punto { background: var(--itinerario); }
+.stato-fonte--errore .stato-fonte__punto { background: var(--occupato); box-shadow: 0 0 8px var(--occupato); }
+.stato-fonte__messaggio { color: var(--testo-tenue); }
+
+@media (max-width: 800px) {
+  .testata { grid-template-columns: 1fr; }
+  .stato-fonte { justify-self: start; text-align: left; }
+  .orologio { font-size: 28px; }
+}
