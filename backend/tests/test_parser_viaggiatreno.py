@@ -4,7 +4,7 @@ from pathlib import Path
 
 from treni.dominio.treno import RiferimentoTreno
 from treni.fonti.viaggiatreno.client import formato_data_vt
-from treni.fonti.viaggiatreno.parser import riferimento_da_tabellone, treno_da_andamento
+from treni.fonti.viaggiatreno.parser import riferimento_da_tabellone, treno_da_andamento, voce_tabellone
 
 DATI = Path(__file__).parent / "dati"
 
@@ -35,3 +35,14 @@ def test_riga_tabellone():
 def test_formato_data_come_javascript():
     istante = datetime(2026, 10, 29, 9, 5, tzinfo=timezone.utc)
     assert formato_data_vt(istante) == "Thu Oct 29 2026 10:05:00 GMT+0100"
+
+
+def test_voci_del_tabellone_partenze_e_arrivi():
+    voce = {
+        "numeroTreno": 2645, "codOrigine": "S01700", "dataPartenzaTreno": 1793232000000,
+        "compNumeroTreno": "REG 2645", "destinazione": "PIACENZA", "origine": "MILANO CENTRALE",
+    }
+    partenza = voce_tabellone(voce, "partenza")
+    arrivo = voce_tabellone(voce, "arrivo")
+    assert (partenza.categoria, partenza.capolinea) == ("REG", "PIACENZA")
+    assert arrivo.capolinea == "MILANO CENTRALE"

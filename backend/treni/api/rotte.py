@@ -11,8 +11,8 @@ router = APIRouter(prefix="/api")
 
 def scatta(request: Request):
     """Fotografia della circolazione in questo istante."""
-    agg = request.app.state.aggiornatore
-    fotografo = request.app.state.fotografo
+    gestore = request.app.state.gestore
+    agg, fotografo = gestore.aggiornatore, gestore.fotografo
     adesso = datetime.now(timezone.utc)
     treni = list(agg.registro.treni.values())
     return fotografo.scatta(agg.linea, agg.calcolatore, treni, adesso)
@@ -20,17 +20,17 @@ def scatta(request: Request):
 
 @router.get("/linea")
 def linea(request: Request) -> dict:
-    return ser.linea_json(request.app.state.aggiornatore.linea)
+    return ser.linea_json(request.app.state.gestore.aggiornatore.linea)
 
 
 @router.get("/stato")
 def stato(request: Request) -> dict:
-    return ser.istantanea_json(scatta(request), request.app.state.aggiornatore.stato_fonte)
+    return ser.istantanea_json(scatta(request), request.app.state.gestore.aggiornatore.stato_fonte)
 
 
 @router.get("/treni/{chiave}")
 def dettaglio_treno(chiave: str, request: Request) -> dict:
-    agg = request.app.state.aggiornatore
+    agg = request.app.state.gestore.aggiornatore
     ist = scatta(request)
     for t in ist.treni:
         if t.treno.chiave == chiave:

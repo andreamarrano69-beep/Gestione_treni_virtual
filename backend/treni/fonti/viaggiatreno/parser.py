@@ -5,7 +5,7 @@ Il formato non è documentato: ogni campo viene letto con prudenza.
 
 from datetime import datetime, timezone
 
-from treni.dominio.treno import Fermata, RiferimentoTreno, Treno
+from treni.dominio.treno import Fermata, RiferimentoTreno, Treno, VoceTabellone
 
 FERMATA_SOPPRESSA = 3  # valore di actualFermataType
 
@@ -29,6 +29,16 @@ def riferimento_da_tabellone(voce: dict) -> RiferimentoTreno | None:
     if not (numero and origine and data):
         return None
     return RiferimentoTreno(numero=str(numero), cod_origine=str(origine), data_partenza_ms=int(data))
+
+
+def voce_tabellone(voce: dict, verso: str) -> VoceTabellone | None:
+    """verso: "partenza" (capolinea = destinazione) o "arrivo" (capolinea = origine)."""
+    rif = riferimento_da_tabellone(voce)
+    if rif is None:
+        return None
+    _, categoria = _sigla_e_categoria(voce, rif.numero)
+    capolinea = voce.get("destinazione") if verso == "partenza" else voce.get("origine")
+    return VoceTabellone(riferimento=rif, categoria=categoria, verso=verso, capolinea=str(capolinea or ""))
 
 
 def _fermata(f: dict) -> Fermata:

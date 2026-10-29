@@ -17,6 +17,16 @@ class RiferimentoTreno:
         return f"{self.cod_origine}-{self.numero}-{self.data_partenza_ms}"
 
 
+@dataclass(frozen=True)
+class VoceTabellone:
+    """Una riga del tabellone partenze o arrivi di una stazione."""
+
+    riferimento: RiferimentoTreno
+    categoria: str
+    verso: str  # "partenza" oppure "arrivo"
+    capolinea: str  # destinazione se in partenza, origine se in arrivo
+
+
 @dataclass
 class Fermata:
     codice: str

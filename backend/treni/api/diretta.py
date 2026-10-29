@@ -18,7 +18,7 @@ async def diretta(websocket: WebSocket) -> None:
     try:
         while True:
             ist = scatta(websocket)
-            await websocket.send_json(ser.istantanea_json(ist, app.state.aggiornatore.stato_fonte))
+            await websocket.send_json(ser.istantanea_json(ist, app.state.gestore.aggiornatore.stato_fonte))
             await asyncio.sleep(intervallo)
     except WebSocketDisconnect:
         pass

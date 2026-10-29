@@ -74,5 +74,13 @@ class ClientViaggiaTreno:
     async def andamento_treno(self, cod_origine: str, numero: str, data_ms: int) -> dict | None:
         return await self._json(f"andamentoTreno/{cod_origine}/{numero}/{data_ms}")
 
+    async def regione(self, codice_stazione: str) -> str | None:
+        risposta = await self._get(f"regione/{codice_stazione}")
+        testo = risposta.text.strip()
+        return testo if risposta.status_code == 200 and testo.isdigit() else None
+
+    async def dettaglio_stazione(self, codice_stazione: str, regione: str) -> dict | None:
+        return await self._json(f"dettaglioStazione/{codice_stazione}/{regione}")
+
     async def chiudi(self) -> None:
         await self._http.aclose()

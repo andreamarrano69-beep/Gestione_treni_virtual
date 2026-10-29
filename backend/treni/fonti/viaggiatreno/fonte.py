@@ -5,11 +5,12 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from treni.dominio.linea import Linea
-from treni.dominio.treno import RiferimentoTreno, Treno
+from treni.dominio.treno import RiferimentoTreno, Treno, VoceTabellone
 from treni.fonti.base import ErroreFonte
 from treni.fonti.viaggiatreno import parser
 from treni.fonti.viaggiatreno.client import ClientViaggiaTreno
 from treni.fonti.viaggiatreno.codici import risolvi_codici
+from treni.fonti.viaggiatreno.coordinate import CoordinateStazioni
 
 log = logging.getLogger(__name__)
 
@@ -21,6 +22,7 @@ class FonteViaggiaTreno:
     def __init__(self, url_base: str, cartella_cache: Path):
         self._client = ClientViaggiaTreno(url_base)
         self._cartella_cache = cartella_cache
+        self._coordinate = CoordinateStazioni(self._client, cartella_cache)
 
     async def prepara(self, linea: Linea) -> Linea:
         linea = await risolvi_codici(linea, self._client, self._cartella_cache)
@@ -32,23 +34,19 @@ class FonteViaggiaTreno:
         return linea
 
     async def scopri_treni(self, linea: Linea) -> list[RiferimentoTreno]:
-        adesso = datetime.now(timezone.utc)
         trovati: dict[str, RiferimentoTreno] = {}
         errori = 0
         for stazione in linea.stazioni:
             if not stazione.codice:
                 continue
             try:
-                voci = await self._client.partenze(stazione.codice, adesso)
-                voci += await self._client.arrivi(stazione.codice, adesso)
+                voci = await self.tabellone(stazione.codice)
             except ErroreFonte as e:
                 errori += 1
                 log.warning("Tabellone di %s non disponibile: %s", stazione.nome, e)
                 continue
             for voce in voci:
-                rif = parser.riferimento_da_tabellone(voce)
-                if rif:
-                    trovati[rif.chiave] = rif
+                trovati[voce.riferimento.chiave] = voce.riferimento
         if errori and not trovati:
             raise ErroreFonte("Nessun tabellone di stazione disponibile")
         return list(trovati.values())
@@ -60,6 +58,19 @@ class FonteViaggiaTreno:
         if not dati or not dati.get("fermate"):
             return None
         return parser.treno_da_andamento(dati, riferimento)
+
+    async def cerca_stazioni(self, testo: str) -> list[tuple[str, str]]:
+        return await self._client.cerca_stazione(testo)
+
+    async def tabellone(self, codice_stazione: str) -> list[VoceTabellone]:
+        adesso = datetime.now(timezone.utc)
+        righe = [(v, "partenza") for v in await self._client.partenze(codice_stazione, adesso)]
+        righe += [(v, "arrivo") for v in await self._client.arrivi(codice_stazione, adesso)]
+        voci = (parser.voce_tabellone(voce, verso) for voce, verso in righe)
+        return [v for v in voci if v]
+
+    async def coordinate(self, codice_stazione: str) -> tuple[float, float] | None:
+        return await self._coordinate.di(codice_stazione)
 
     async def chiudi(self) -> None:
         await self._client.chiudi()

@@ -1,17 +1,15 @@
 """Costruisce l'applicazione web: API, canale in diretta e pagine dello schermo."""
 
 from contextlib import asynccontextmanager
-from datetime import timedelta
 
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
-from treni.api import diretta, rotte
+from treni.api import diretta, rotte, rotte_linee
 from treni.config import Impostazioni, carica_impostazioni
 from treni.fonti.base import FonteDati
 from treni.linee.caricatore import carica_linea
-from treni.servizi.aggiornatore import Aggiornatore
-from treni.servizi.istantanea import Fotografo
+from treni.servizi.gestore import GestoreLinea
 
 
 def crea_fonte(imp: Impostazioni) -> FonteDati:
@@ -31,17 +29,16 @@ def crea_app(imp: Impostazioni | None = None) -> FastAPI:
 
     @asynccontextmanager
     async def ciclo_di_vita(app: FastAPI):
-        linea = carica_linea(imp.cartella_linee, imp.linea)
-        aggiornatore = Aggiornatore(crea_fonte(imp), linea, imp)
+        gestore = GestoreLinea(crea_fonte(imp), imp)
         app.state.impostazioni = imp
-        app.state.aggiornatore = aggiornatore
-        app.state.fotografo = Fotografo(timedelta(minutes=imp.orizzonte_incroci_min))
-        aggiornatore.avvia()
+        app.state.gestore = gestore
+        await gestore.attiva(carica_linea(imp.cartella_linee, imp.linea))
         yield
-        await aggiornatore.ferma()
+        await gestore.chiudi()
 
     app = FastAPI(title="Gestione Treni Virtual", lifespan=ciclo_di_vita)
     app.include_router(rotte.router)
+    app.include_router(rotte_linee.router)
     app.include_router(diretta.router)
     app.mount("/", StaticFiles(directory=imp.cartella_frontend, html=True), name="schermo")
     return app

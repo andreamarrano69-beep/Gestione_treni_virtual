@@ -51,11 +51,31 @@ TRENI_FONTE=demo python -m treni          # su Windows: set TRENI_FONTE=demo && 
 | `TRENI_INTERVALLO_SCOPERTA` | `300` | secondi tra una ricerca di nuovi treni e l'altra |
 | `TRENI_ORIZZONTE_INCROCI` | `30` | minuti di previsione degli incroci |
 
-## Aggiungere una linea
+## Filtro per categoria
+
+Sopra il quadro i pulsanti **Frecce / AV**, **Intercity / EC**, **Regionali** e
+**Altri** mostrano o nascondono i treni di quella categoria (con il loro numero).
+Gli incroci con un treno nascosto spariscono anche dall'elenco. La scelta resta
+memorizzata nel browser.
+
+## Cambiare linea
+
+Il pulsante **Scegli linea…** apre una finestra dove puoi:
+
+1. riaprire una delle **linee salvate**, oppure
+2. cercare una **stazione di partenza**, vedere tutte le **destinazioni** servite
+   in questo momento (con numero di treni e categorie) e sceglierne una.
+
+Il programma prende i treni verso quella destinazione, preferendo i regionali
+che fermano ovunque, e usa le loro fermate reali come stazioni della linea. I km
+sono approssimati: in linea d'aria tra le stazioni, oppure stimati dai tempi di
+percorrenza. La linea viene salvata in `dati/linee/` e attivata subito.
+
+## Aggiungere una linea a mano
 
 Copia `dati/linee/milano_bologna.yaml`, cambia stazioni, chilometriche e binari,
-poi avvia con `TRENI_LINEA=<nome file>`. I codici ViaggiaTreno delle stazioni
-vengono cercati in automatico e salvati in `dati/cache/`.
+poi avvia con `TRENI_LINEA=<nome file>` o sceglila dalla finestra. I codici
+ViaggiaTreno delle stazioni vengono cercati in automatico e salvati in `dati/cache/`.
 
 ## Test
 
@@ -82,6 +102,10 @@ backend/treni/
     posizione.py         dove si trova un treno in un istante
     incroci.py           previsione di incroci e precedenze
     aggiornatore.py      cicli che interrogano la fonte
+    gestore.py           linea attiva e cambio di linea
+    tratte.py            destinazioni servite da una stazione
+    costruttore_linea.py nuova linea dalle fermate dei treni
+    distanze.py          km approssimati tra le fermate
     istantanea.py        fotografia della circolazione
   api/                   HTTP (/api/...) e WebSocket (/ws)
 backend/tests/           test automatici
@@ -89,7 +113,8 @@ frontend/
   index.html
   css/                   stili separati per area dello schermo
   js/sinottico/          disegno del quadro (geometria, rete, treni, incroci, occupazioni)
-  js/pannelli/           pannelli laterali (testata, elenchi, dettaglio, legenda)
+  js/pannelli/           pannelli (testata, elenchi, dettaglio, legenda, filtro categorie)
+  js/finestre/           finestra pop-up "Scegli linea"
   js/rete/               comunicazione col server
   js/util/               funzioni di supporto
 dati/linee/              descrizioni delle linee

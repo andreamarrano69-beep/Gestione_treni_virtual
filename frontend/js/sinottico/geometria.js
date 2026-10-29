@@ -3,9 +3,11 @@
 // Le stazioni non sono messe in scala pura (quelle vicine a Milano finirebbero
 // una sopra l'altra): la posizione è metà in scala e metà a passo costante.
 
-export const LARGHEZZA = 1900;
+export const LARGHEZZA_MINIMA = 1900;
+export const SPAZIO_PER_STAZIONE = 140; // sotto questa distanza le stazioni si accavallano
 export const ALTEZZA = 360;
 export const MARGINE = 90;
+const MARGINE_DESTRO = 160; // spazio per il nome inclinato dell'ultima stazione
 export const Y_CRESCENTE = 170; // binario di corsa per i treni verso km crescenti
 export const Y_DECRESCENTE = 230; // binario di corsa per i treni verso km decrescenti
 export const SEMI_STAZIONE = 18; // metà lunghezza dei binari di stazione
@@ -16,7 +18,8 @@ export function creaGeometria(linea) {
   const n = stazioni.length;
   const km0 = stazioni[0].km;
   const kmTot = stazioni[n - 1].km - km0 || 1;
-  const utile = LARGHEZZA - 2 * MARGINE;
+  const larghezza = Math.max(LARGHEZZA_MINIMA, n * SPAZIO_PER_STAZIONE);
+  const utile = larghezza - MARGINE - MARGINE_DESTRO;
 
   const xs = stazioni.map(
     (s, i) => MARGINE + utile * (0.5 * (n > 1 ? i / (n - 1) : 0) + (0.5 * (s.km - km0)) / kmTot),
@@ -54,6 +57,7 @@ export function creaGeometria(linea) {
   }
 
   return {
+    larghezza,
     xDaKm,
     xStazione: (id) => xs[indice.get(id)],
     stazione: (id) => stazioni[indice.get(id)],

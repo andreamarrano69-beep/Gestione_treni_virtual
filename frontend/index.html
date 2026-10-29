@@ -8,6 +8,8 @@
   <link rel="stylesheet" href="css/testata.css">
   <link rel="stylesheet" href="css/sinottico.css">
   <link rel="stylesheet" href="css/pannelli.css">
+  <link rel="stylesheet" href="css/comandi.css">
+  <link rel="stylesheet" href="css/finestra.css">
 </head>
 <body>
   <header class="testata">
@@ -23,6 +25,11 @@
   </header>
 
   <main>
+    <nav class="comandi" aria-label="Comandi">
+      <div class="filtro" id="filtro-categorie"></div>
+      <button type="button" class="pulsante" id="apri-scelta-linea">⇆ Scegli linea…</button>
+    </nav>
+
     <section class="quadro" aria-label="Quadro sinottico della linea">
       <svg id="sinottico" role="img"></svg>
       <ul class="legenda" id="legenda"></ul>
@@ -45,6 +52,8 @@
       </article>
     </section>
   </main>
+
+  <dialog class="finestra" id="finestra-linea" aria-labelledby="titolo-finestra-linea"></dialog>
 
   <script type="module" src="js/main.js"></script>
 </body>

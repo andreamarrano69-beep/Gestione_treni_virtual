@@ -39,7 +39,6 @@ class Aggiornatore:
         for compito in self._compiti:
             compito.cancel()
         await asyncio.gather(*self._compiti, return_exceptions=True)
-        await self.fonte.chiudi()
 
     async def _ciclo(self, azione, intervallo_s: int) -> None:
         while True:

@@ -1,15 +1,17 @@
 // Mette insieme i livelli del quadro sinottico in un unico SVG.
 
 import { svg } from "../util/dom.js";
-import { ALTEZZA, LARGHEZZA, creaGeometria } from "./geometria.js";
+import { ALTEZZA, LARGHEZZA_MINIMA, creaGeometria } from "./geometria.js";
 import { creaLivelloIncroci } from "./incroci.js";
 import { aggiornaOccupazioni } from "./occupazioni.js";
 import { disegnaRete } from "./rete.js";
 import { creaLivelloTreni } from "./treni.js";
 
 export function creaQuadro(elementoSvg, lineaDati, alClicTreno) {
-  elementoSvg.setAttribute("viewBox", `0 0 ${LARGHEZZA} ${ALTEZZA}`);
   const geo = creaGeometria(lineaDati);
+  elementoSvg.setAttribute("viewBox", `0 0 ${geo.larghezza} ${ALTEZZA}`);
+  // Linee con molte stazioni: il quadro si allarga e la sezione scorre in orizzontale.
+  if (geo.larghezza > LARGHEZZA_MINIMA) elementoSvg.style.minWidth = `${Math.round(geo.larghezza * 0.75)}px`;
 
   const livelloRete = svg("g");
   const livelloIncroci = svg("g");

@@ -1,0 +1,41 @@
+/* Barra sopra il quadro: filtro per categoria e scelta della linea. */
+
+.comandi {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.filtro { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 12px; }
+.filtro__etichetta { color: var(--testo-tenue); text-transform: uppercase; letter-spacing: 1px; }
+
+.filtro__voce {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border: 1px solid var(--bordo);
+  background: var(--sfondo-pannello);
+  color: var(--testo);
+  font: inherit;
+  cursor: pointer;
+}
+.filtro__voce[aria-pressed="false"] { color: var(--testo-tenue); text-decoration: line-through; opacity: 0.6; }
+.filtro__colore { width: 12px; height: 8px; display: inline-block; }
+.filtro__numero { color: var(--testo-tenue); }
+
+.pulsante {
+  padding: 6px 14px;
+  border: 1px solid var(--itinerario);
+  background: transparent;
+  color: var(--itinerario);
+  font: inherit;
+  font-weight: bold;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+.pulsante:hover { background: rgba(244, 196, 48, 0.12); }
+.pulsante:disabled { opacity: 0.5; cursor: wait; }

@@ -3,7 +3,7 @@
 from typing import Protocol
 
 from treni.dominio.linea import Linea
-from treni.dominio.treno import RiferimentoTreno, Treno
+from treni.dominio.treno import RiferimentoTreno, Treno, VoceTabellone
 
 
 class ErroreFonte(Exception):
@@ -24,6 +24,18 @@ class FonteDati(Protocol):
 
     async def andamento(self, riferimento: RiferimentoTreno) -> Treno | None:
         """Stato aggiornato del treno, o None se la fonte non lo conosce."""
+        ...
+
+    async def cerca_stazioni(self, testo: str) -> list[tuple[str, str]]:
+        """Stazioni il cui nome inizia per `testo`: [(nome, codice)]."""
+        ...
+
+    async def tabellone(self, codice_stazione: str) -> list[VoceTabellone]:
+        """Treni in partenza e in arrivo nella stazione, da adesso."""
+        ...
+
+    async def coordinate(self, codice_stazione: str) -> tuple[float, float] | None:
+        """(latitudine, longitudine) della stazione, se note."""
         ...
 
     async def chiudi(self) -> None: ...
