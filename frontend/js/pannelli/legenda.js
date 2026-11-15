@@ -4,13 +4,16 @@ import { html } from "../util/dom.js";
 
 const VOCI = [
   ["var(--cat-frecce)", "Frecce / AV"],
-  ["var(--cat-ic)", "Intercity / EC"],
+  ["var(--cat-ic)", "Intercity"],
+  ["var(--cat-estero)", "Internazionali (EC, EN, RJ…)"],
   ["var(--cat-reg)", "Regionali"],
   ["var(--cat-altro)", "Altri"],
   ["var(--occupato)", "Binario occupato"],
   ["var(--itinerario)", "Itinerario (dedotto dal binario)"],
   ["var(--incrocio)", "Incrocio previsto"],
   ["var(--precedenza)", "Precedenza prevista"],
+  ["var(--bivio)", "Conflitto al bivio"],
+  ["var(--binario)", "Raccordo verso altre linee"],
 ];
 
 export function mostraLegenda(lineaDati) {

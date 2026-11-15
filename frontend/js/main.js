@@ -39,7 +39,7 @@ async function avvia() {
     const ist = filtro.filtra(stato.istantanea);
     mostraStatoFonte(ist.fonte);
     quadro.aggiorna(ist, stato.selezionato);
-    elencoTreni.aggiorna(ist.treni, stato.selezionato);
+    elencoTreni.aggiorna(ist.treni, stato.selezionato, ist.raccordi);
     elencoIncroci.aggiorna(ist.incroci, ist.treni);
   }
 
@@ -50,6 +50,12 @@ async function avvia() {
     },
     connessionePersa: mostraConnessionePersa,
   });
+}
+
+// Installabile come app (telefono o PC): il browser lo permette solo su
+// connessioni sicure, cioè https o localhost.
+if ("serviceWorker" in navigator && window.isSecureContext) {
+  navigator.serviceWorker.register("sw.js").catch(() => {});
 }
 
 avvia();

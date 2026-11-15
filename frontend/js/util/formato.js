@@ -11,13 +11,15 @@ export const ora = (ms) => (ms ? FORMATO_ORA.format(ms) : "--:--");
 export const oraConSecondi = (ms) => FORMATO_ORA_SECONDI.format(ms);
 
 const FRECCE = ["FR", "FA", "FB", "ES", "ESC", "AV"];
-const INTERCITY = ["IC", "ICN", "EC", "EN"];
+const INTERCITY = ["IC", "ICN"];
+const INTERNAZIONALI = ["EC", "EN", "ECE", "RJ", "RJX", "NJ", "TGV", "ICE", "EST"];
 const REGIONALI = ["REG", "RV", "R", "S", "MET", "RE"];
 
 export function gruppoCategoria(categoria) {
   const c = (categoria || "").toUpperCase();
   if (FRECCE.includes(c)) return "frecce";
   if (INTERCITY.includes(c)) return "ic";
+  if (INTERNAZIONALI.includes(c)) return "estero";
   if (REGIONALI.includes(c)) return "reg";
   return "altro";
 }

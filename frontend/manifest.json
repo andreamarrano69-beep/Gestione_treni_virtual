@@ -1,0 +1,17 @@
+{
+  "name": "Quadro Sinottico Treni",
+  "short_name": "Treni DCO",
+  "description": "Quadro sinottico in stile sala circolazione con i treni in diretta",
+  "lang": "it",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#04070b",
+  "theme_color": "#04070b",
+  "icons": [
+    { "src": "icone/icona-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icone/icona-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icone/icona-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

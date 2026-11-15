@@ -11,6 +11,7 @@ from treni.dominio.circolazione import PosizioneTreno, StatoTreno
 from treni.dominio.linea import Linea, Stazione
 from treni.dominio.treno import Treno
 from treni.linee.abbinamento import Abbinatore
+from treni.servizi.lati import lato_e_direzione
 from treni.servizi.orario_stimato import PassaggioStimato
 
 
@@ -30,6 +31,14 @@ class CalcolatorePosizione:
             and a.id != b.id
             and abs(a.km - b.km) <= self._linea.max_salto_km
         )
+
+    @property
+    def linea(self) -> Linea:
+        return self._linea
+
+    def tocca_la_linea(self, treno: Treno) -> bool:
+        """Ferma in almeno una stazione della linea (anche solo per entrare o uscire)."""
+        return any(self.stazioni_di(treno))
 
     def percorre_la_linea(self, treno: Treno) -> bool:
         stazioni = self.stazioni_di(treno)
@@ -53,9 +62,9 @@ class CalcolatorePosizione:
         stazione = stazioni[i]
         if fermata.soppressa:
             return None
-        direzione = self._direzione_vicino(stazioni, i)
-        if direzione is None:
-            return None  # unica fermata sulla linea: non la percorre
+        direzione = self.direzione_vicino(stazioni, i)
+        if direzione is None:  # unica fermata sulla linea: il verso dipende dal lato del bivio
+            _, direzione = lato_e_direzione(self._linea, stazione, entrata=i > 0, direzione=None)
         return PosizioneTreno(
             stato=StatoTreno.IN_STAZIONE,
             km=stazione.km,
@@ -79,7 +88,7 @@ class CalcolatorePosizione:
             a_stazione_id=b.id,
         )
 
-    def _direzione_vicino(self, stazioni, i: int) -> int | None:
+    def direzione_vicino(self, stazioni, i: int) -> int | None:
         """Direzione del tratto di linea successivo, o in mancanza del precedente."""
         if i + 1 < len(stazioni) and self.tratto_valido(stazioni[i], stazioni[i + 1]):
             return 1 if stazioni[i + 1].km > stazioni[i].km else -1

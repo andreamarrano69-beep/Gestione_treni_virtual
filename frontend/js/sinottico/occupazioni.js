@@ -9,7 +9,7 @@ export function aggiornaOccupazioni(elementi, geo, lineaDati, treni) {
     if (!p) continue;
     if (p.stato === "in_linea") {
       tratti.add(chiaveTratto(lineaDati, p));
-    } else {
+    } else if (p.stato === "in_stazione") {
       const stazione = geo.stazione(p.stazione_id);
       binari.set(`${p.stazione_id}|${geo.indiceBinario(stazione, p.binario, p.direzione)}`, p.direzione);
     }

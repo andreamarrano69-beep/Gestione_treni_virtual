@@ -46,15 +46,52 @@ TRENI_FONTE=demo python -m treni          # su Windows: set TRENI_FONTE=demo && 
 | `TRENI_FONTE` | `viaggiatreno` | `viaggiatreno` (dati reali) oppure `demo` |
 | `TRENI_LINEA` | `milano_bologna` | file della linea in `dati/linee/` |
 | `TRENI_PORTA` | `8000` | porta del server |
-| `TRENI_HOST` | `127.0.0.1` | `0.0.0.0` per aprirlo da altri dispositivi (es. una TV) |
+| `TRENI_HOST` | `127.0.0.1` | `0.0.0.0` per aprirlo da altri dispositivi (come `--rete`) |
 | `TRENI_INTERVALLO_ANDAMENTO` | `60` | secondi tra un aggiornamento dei treni e l'altro |
 | `TRENI_INTERVALLO_SCOPERTA` | `300` | secondi tra una ricerca di nuovi treni e l'altra |
 | `TRENI_ORIZZONTE_INCROCI` | `30` | minuti di previsione degli incroci |
 
+## Raccordi: treni che entrano ed escono dalla linea
+
+Ogni treno che ferma in almeno una stazione della linea viene seguito, anche se
+arriva da un'altra linea o dall'estero (EC, EN, Railjet…) oppure ci va.
+Sotto le stazioni dove questo succede compare un **raccordo**: un ramo
+tratteggiato con il nome della prima fermata fuori linea (es. "◂ Monza").
+
+- I treni **in arrivo** compaiono sul ramo fino a 10 minuti prima di lasciare la
+  fermata precedente e avanzano verso il bivio, con i minuti mancanti ("tra 4'").
+- I treni **in uscita** percorrono il ramo verso l'esterno e poi spariscono.
+- Il tronco occupato diventa rosso; il deviatoio del bivio diventa giallo quando
+  un treno è vicino.
+- **Conflitto al bivio** (rombo bianco, simbolo ⋔ nell'elenco): un treno entra o
+  esce mentre un altro passa dalla stessa stazione entro 3 minuti. Nella realtà
+  uno dei due deve dare la precedenza.
+
+Il bivio viene posto nella prima (o ultima) stazione della linea in cui il treno
+ferma: se entra tra due stazioni senza fermarsi, il ramo è disegnato su quella
+più vicina. Lo stato reale dei deviatoi non è pubblico: è dedotto dai treni.
+
+## Sul telefono (Android) come app
+
+Il PC fa da server: deve restare acceso con il programma avviato.
+
+1. Avvia con `python -m treni --rete`: viene stampato l'indirizzo per il
+   telefono, es. `http://192.168.1.20:8000`. La prima volta Windows chiede il
+   permesso del firewall: consenti l'accesso sulle **reti private**.
+2. Sul telefono, collegato alla **stessa Wi-Fi**, apri quell'indirizzo in Chrome.
+3. Menu ⋮ → **Aggiungi a schermata Home**.
+
+Chrome installa una vera app (a tutto schermo, con icona) solo da indirizzi
+sicuri. Per averla da `http://192.168…`: sul telefono apri
+`chrome://flags/#unsafely-treat-insecure-origin-as-secure`, scrivi l'indirizzo
+del PC (es. `http://192.168.1.20:8000`), imposta **Enabled**, riavvia Chrome e
+poi menu ⋮ → **Installa app**. Senza questo passaggio l'icona sulla Home apre
+comunque il quadro, ma dentro una scheda di Chrome.
+
 ## Filtro per categoria
 
-Sopra il quadro i pulsanti **Frecce / AV**, **Intercity / EC**, **Regionali** e
-**Altri** mostrano o nascondono i treni di quella categoria (con il loro numero).
+Sopra il quadro i pulsanti **Frecce / AV**, **Intercity**, **Internazionali**
+(EC, EN, Railjet, TGV…), **Regionali** e **Altri** mostrano o nascondono i treni di quella categoria (con il loro numero).
 Gli incroci con un treno nascosto spariscono anche dall'elenco. La scelta resta
 memorizzata nel browser.
 
@@ -106,17 +143,22 @@ backend/treni/
     tratte.py            destinazioni servite da una stazione
     costruttore_linea.py nuova linea dalle fermate dei treni
     distanze.py          km approssimati tra le fermate
+    lati.py              da che lato della stazione si entra o si esce
+    raccordi.py          treni in arrivo da altre linee o in uscita
+    conflitti_bivio.py   treni che impegnano lo stesso bivio
     istantanea.py        fotografia della circolazione
   api/                   HTTP (/api/...) e WebSocket (/ws)
 backend/tests/           test automatici
 frontend/
   index.html
   css/                   stili separati per area dello schermo
-  js/sinottico/          disegno del quadro (geometria, rete, treni, incroci, occupazioni)
+  js/sinottico/          disegno del quadro (geometria, rete, raccordi, treni, incroci, occupazioni)
   js/pannelli/           pannelli (testata, elenchi, dettaglio, legenda, filtro categorie)
   js/finestre/           finestra pop-up "Scegli linea"
   js/rete/               comunicazione col server
   js/util/               funzioni di supporto
+  manifest.json, sw.js   installazione come app (PWA)
+  icone/                 icone dell'app
 dati/linee/              descrizioni delle linee
 ```
 

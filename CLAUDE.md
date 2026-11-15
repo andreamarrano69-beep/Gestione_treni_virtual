@@ -16,4 +16,5 @@
 ```bash
 cd backend && python -m pytest                 # test
 cd backend && TRENI_FONTE=demo python -m treni # avvio con treni simulati
+cd backend && python -m treni --rete           # raggiungibile dal telefono
 ```

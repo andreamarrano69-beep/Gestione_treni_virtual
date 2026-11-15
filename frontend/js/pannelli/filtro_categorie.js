@@ -6,7 +6,8 @@ import { gruppoCategoria } from "../util/formato.js";
 
 const GRUPPI = [
   ["frecce", "Frecce / AV"],
-  ["ic", "Intercity / EC"],
+  ["ic", "Intercity"],
+  ["estero", "Internazionali"],
   ["reg", "Regionali"],
   ["altro", "Altri"],
 ];

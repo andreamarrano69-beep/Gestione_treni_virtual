@@ -81,7 +81,7 @@ class Aggiornatore:
         risultati = await asyncio.gather(*(self._andamento(r) for r in riferimenti))
         adesso = datetime.now(timezone.utc)
         for rif, treno in zip(riferimenti, risultati):
-            if treno is None or treno.soppresso or not self.calcolatore.percorre_la_linea(treno):
+            if treno is None or treno.soppresso or not self.calcolatore.tocca_la_linea(treno):
                 self.registro.ignora(rif.chiave, adesso)
             elif self._concluso(treno, adesso):
                 self.registro.ignora(rif.chiave, adesso)

@@ -17,6 +17,7 @@
   --cat-ic: #3a86ff;
   --cat-reg: #2ec27e;
   --cat-altro: #c77dff;
+  --cat-estero: #ff6fb5;
 
   --ritardo-ok: #2ec27e;
   --ritardo-lieve: #f4c430;
@@ -25,6 +26,7 @@
 
   --incrocio: #ffb000;
   --precedenza: #22d3ee;
+  --bivio: #ffffff;
 
   --carattere: "Consolas", "DejaVu Sans Mono", "Menlo", monospace;
 }

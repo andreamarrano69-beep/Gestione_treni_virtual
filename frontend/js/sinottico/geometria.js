@@ -6,8 +6,8 @@
 export const LARGHEZZA_MINIMA = 1900;
 export const SPAZIO_PER_STAZIONE = 140; // sotto questa distanza le stazioni si accavallano
 export const ALTEZZA = 360;
-export const MARGINE = 90;
-const MARGINE_DESTRO = 160; // spazio per il nome inclinato dell'ultima stazione
+export const MARGINE = 170; // spazio per i raccordi del primo capolinea
+const MARGINE_DESTRO = 180; // nome inclinato dell'ultima stazione e suoi raccordi
 export const Y_CRESCENTE = 170; // binario di corsa per i treni verso km crescenti
 export const Y_DECRESCENTE = 230; // binario di corsa per i treni verso km decrescenti
 export const SEMI_STAZIONE = 18; // metà lunghezza dei binari di stazione

@@ -34,6 +34,12 @@
 .incrocio__segno { stroke: #000; stroke-width: 1; }
 .incrocio--incrocio .incrocio__segno { fill: var(--incrocio); }
 .incrocio--precedenza .incrocio__segno { fill: var(--precedenza); }
+.incrocio--bivio .incrocio__segno { fill: var(--bivio); stroke: var(--occupato); stroke-width: 2; }
+
+/* Raccordi verso altre linee */
+.binario.raccordo { stroke-width: 2.5; stroke-dasharray: 6 3; }
+.binario.raccordo.occupato { stroke-dasharray: none; }
+.raccordo__nome { fill: var(--testo-tenue); font-size: 9px; }
 
 /* Legenda */
 .legenda {

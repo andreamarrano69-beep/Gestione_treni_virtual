@@ -2,6 +2,7 @@
 // Come nei quadri RFI il numero del treno sta dentro il rettangolo ("descrittore").
 // In linea il ritardo è scritto accanto; in stazione, dove i binari sono vicini,
 // diventa il colore del bordo per non sovrapporsi ai treni dei binari accanto.
+// Sui raccordi, per i treni in arrivo, accanto compaiono i minuti mancanti al bivio.
 
 import { svg } from "../util/dom.js";
 import { coloreCategoria, coloreRitardo } from "../util/formato.js";
@@ -21,19 +22,39 @@ function creaTreno(treno, alClic) {
   return { gruppo, corpo, punta, sigla, ritardo, titolo };
 }
 
-function aggiornaTreno(parti, treno, geo) {
-  const p = treno.posizione;
-  const x = geo.xDaKm(p.km);
+/** Dove disegnare il treno e verso quale lato dello schermo punta. */
+function collocazione(p, geo, puntoRaccordo) {
+  if (p.stato === "sul_raccordo") {
+    const q = puntoRaccordo(p.raccordo_id, p.avanzamento, p.entrata);
+    return q && { x: q.x, y: q.y, d: q.versoSchermo };
+  }
   let y = geo.yCorsa(p.direzione);
   if (p.stato === "in_stazione") {
     const stazione = geo.stazione(p.stazione_id);
     y = geo.yBinari(stazione)[geo.indiceBinario(stazione, p.binario, p.direzione)];
   }
-  parti.gruppo.style.transform = `translate(${x}px, ${y}px)`;
+  return { x: geo.xDaKm(p.km), y, d: p.direzione };
+}
+
+function testoAccanto(treno) {
+  const p = treno.posizione;
+  if (p.stato === "sul_raccordo" && p.entrata && p.minuti_al_bivio != null) {
+    return { testo: `tra ${p.minuti_al_bivio}'`, colore: "var(--itinerario)" };
+  }
+  const inRitardo = treno.ritardo > 0 && p.stato !== "in_stazione";
+  return { testo: inRitardo ? `+${treno.ritardo}'` : "", colore: coloreRitardo(treno.ritardo) };
+}
+
+function aggiornaTreno(parti, treno, geo, puntoRaccordo) {
+  const p = treno.posizione;
+  const dove = collocazione(p, geo, puntoRaccordo);
+  parti.gruppo.style.display = dove ? "" : "none";
+  if (!dove) return;
+  parti.gruppo.style.transform = `translate(${dove.x}px, ${dove.y}px)`;
 
   // Il corpo è centrato sul punto; la punta indica la direzione di marcia.
   const colore = coloreCategoria(treno.categoria);
-  const d = p.direzione;
+  const d = dove.d;
   parti.corpo.setAttribute("x", -LUNGHEZZA / 2);
   parti.corpo.style.fill = colore;
   const xp = (d * LUNGHEZZA) / 2;
@@ -45,9 +66,10 @@ function aggiornaTreno(parti, treno, geo) {
 
   const inStazione = p.stato === "in_stazione";
   const inRitardo = treno.ritardo > 0;
-  parti.ritardo.setAttribute("y", d > 0 ? -10 : 20);
-  parti.ritardo.textContent = inRitardo && !inStazione ? `+${treno.ritardo}'` : "";
-  parti.ritardo.style.fill = coloreRitardo(treno.ritardo);
+  const accanto = testoAccanto(treno);
+  parti.ritardo.setAttribute("y", d > 0 || p.stato === "sul_raccordo" ? -10 : 20);
+  parti.ritardo.textContent = accanto.testo;
+  parti.ritardo.style.fill = accanto.colore;
   parti.corpo.style.stroke = inStazione && inRitardo ? coloreRitardo(treno.ritardo) : "";
   const ritardo = inRitardo ? `  +${treno.ritardo}'` : "";
   parti.titolo.textContent = `${treno.sigla}  ${treno.origine} → ${treno.destinazione}${ritardo}`;
@@ -56,7 +78,7 @@ function aggiornaTreno(parti, treno, geo) {
 export function creaLivelloTreni(livello, geo, alClic) {
   const disegnati = new Map();
 
-  function aggiorna(treni, selezionato) {
+  function aggiorna(treni, selezionato, puntoRaccordo) {
     const visibili = treni.filter((t) => t.posizione);
     const presenti = new Set(visibili.map((t) => t.chiave));
     for (const [chiave, parti] of disegnati) {
@@ -72,11 +94,11 @@ export function creaLivelloTreni(livello, geo, alClic) {
         disegnati.set(treno.chiave, parti);
         livello.append(parti.gruppo);
         parti.gruppo.style.transition = "none"; // il primo posizionamento non va animato
-        aggiornaTreno(parti, treno, geo);
+        aggiornaTreno(parti, treno, geo, puntoRaccordo);
         parti.gruppo.getBoundingClientRect();
         parti.gruppo.style.transition = "";
       } else {
-        aggiornaTreno(parti, treno, geo);
+        aggiornaTreno(parti, treno, geo, puntoRaccordo);
       }
       parti.gruppo.classList.toggle("selezionato", treno.chiave === selezionato);
     }

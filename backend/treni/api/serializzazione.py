@@ -58,6 +58,10 @@ def treno_json(t: TrenoInCircolazione, adesso: datetime) -> dict:
             "binario": p.binario,
             "da_stazione_id": p.da_stazione_id,
             "a_stazione_id": p.a_stazione_id,
+            "raccordo_id": p.raccordo_id,
+            "avanzamento": p.avanzamento,
+            "entrata": p.entrata,
+            "minuti_al_bivio": p.minuti_al_bivio,
         },
     }
 
@@ -83,6 +87,10 @@ def istantanea_json(ist: Istantanea, fonte: StatoFonte) -> dict:
                 "stazione_vicina_id": i.stazione_vicina_id,
             }
             for i in ist.incroci
+        ],
+        "raccordi": [
+            {"id": r.id, "stazione_id": r.stazione_id, "lato": r.lato, "nome": r.nome}
+            for r in ist.raccordi
         ],
     }
 

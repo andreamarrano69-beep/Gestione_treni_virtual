@@ -63,6 +63,7 @@
 .lista-incroci .luogo { grid-column: 3; color: var(--testo-tenue); }
 .icona-incrocio { color: var(--incrocio); }
 .icona-precedenza { color: var(--precedenza); }
+.icona-bivio { color: var(--bivio); }
 
 .dettaglio__intestazione { margin-bottom: 8px; font-size: 12px; }
 .dettaglio__intestazione strong { font-size: 15px; }
