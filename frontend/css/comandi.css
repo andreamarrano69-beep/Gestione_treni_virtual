@@ -39,3 +39,15 @@
 }
 .pulsante:hover { background: rgba(244, 196, 48, 0.12); }
 .pulsante:disabled { opacity: 0.5; cursor: wait; }
+
+.comandi__azioni { display: flex; flex-wrap: wrap; gap: 8px; }
+.pulsante[hidden] { display: none; }
+
+.avviso {
+  margin: 8px 0 0;
+  padding: 8px 12px;
+  border: 1px dashed var(--itinerario);
+  color: var(--testo);
+  font-size: 12px;
+  word-break: break-all;
+}

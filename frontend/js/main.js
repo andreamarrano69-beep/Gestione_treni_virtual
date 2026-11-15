@@ -5,6 +5,7 @@ import { creaDettaglioTreno } from "./pannelli/dettaglio_treno.js";
 import { creaElencoIncroci } from "./pannelli/elenco_incroci.js";
 import { creaElencoTreni } from "./pannelli/elenco_treni.js";
 import { creaFiltroCategorie } from "./pannelli/filtro_categorie.js";
+import { preparaInstallazione } from "./pannelli/installazione.js";
 import { mostraLegenda } from "./pannelli/legenda.js";
 import { avviaOrologio, mostraConnessionePersa, mostraLinea, mostraStatoFonte } from "./pannelli/testata.js";
 import { caricaLinea } from "./rete/api.js";
@@ -52,10 +53,5 @@ async function avvia() {
   });
 }
 
-// Installabile come app (telefono o PC): il browser lo permette solo su
-// connessioni sicure, cioè https o localhost.
-if ("serviceWorker" in navigator && window.isSecureContext) {
-  navigator.serviceWorker.register("sw.js").catch(() => {});
-}
-
+preparaInstallazione();
 avvia();

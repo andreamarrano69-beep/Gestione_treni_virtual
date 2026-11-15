@@ -33,8 +33,12 @@
   <main>
     <nav class="comandi" aria-label="Comandi">
       <div class="filtro" id="filtro-categorie"></div>
-      <button type="button" class="pulsante" id="apri-scelta-linea">⇆ Scegli linea…</button>
+      <div class="comandi__azioni">
+        <button type="button" class="pulsante" id="installa-app" hidden>📲 Installa app</button>
+        <button type="button" class="pulsante" id="apri-scelta-linea">⇆ Scegli linea…</button>
+      </div>
     </nav>
+    <p class="avviso" id="avviso-installazione" hidden></p>
 
     <section class="quadro" aria-label="Quadro sinottico della linea">
       <svg id="sinottico" role="img"></svg>
